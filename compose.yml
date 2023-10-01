@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  server:
+    container_name: server-container
+    image: server-image
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    expose:
+      - ${SERVER_PORT}
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    environment:
+      - EXTENRAL_PORT=${SERVER_PORT}
+      - PGDATABASE=mydb
+      - PGUSER=postgres
+      - PGPASSWORD=mysecretpassword
+      - PGHOST=database
+    depends_on:
+      - database
+  database:
+    container_name: database-container
+    image: "postgres:${POSTGRES_VERSION}-alpine"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    volumes:
+      - ./database/postgres-data:/var/lib/postgresql/data
+      - ./database/init-scripts:/docker-entrypoint-initdb.d
