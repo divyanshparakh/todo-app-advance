@@ -30,3 +30,15 @@ services:
     volumes:
       - ./database/postgres-data:/var/lib/postgresql/data
       - ./database/init-scripts:/docker-entrypoint-initdb.d
+  frontend:
+    container_name: frontend-container
+    image: frontend-image
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    expose:
+      - ${APP_PORT}
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    environment:
+      - EXTENRAL_PORT=${APP_PORT}
