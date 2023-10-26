@@ -1,5 +1,5 @@
-const createError = require('http-errors');
 const express = require('express');
+const createError = require('http-errors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -30,7 +30,7 @@ const limiter = rateLimit({
 });
 
 
-app.use(cors());    // Allows restricted resources on a web page to be accessed 
+app.use(cors());    // Allows restricted resources on a web page to be accessed
 app.use(compression());    // Compress response bodies for all requests
 app.use(helmet());    // Sets HTTP headers appropriately to protect app from well-known web vulerabilities
 app.use(limiter);

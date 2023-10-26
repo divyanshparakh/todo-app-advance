@@ -14,3 +14,11 @@ CREATE TABLE todos (
     progress INT,
     date VARCHAR(300)
 )
+
+-- INSERT INTO todos VALUES (
+--     '45',
+--     'test@gmail.com',
+--     'Hello',
+--     45,
+--     '22-10-2023'
+-- )

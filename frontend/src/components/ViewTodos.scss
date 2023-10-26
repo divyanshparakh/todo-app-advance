@@ -1,0 +1,40 @@
+/* todo-list.scss */
+.todo-list {
+    background: #0F2027;
+    background: -webkit-linear-gradient(to right, #2C5364, #203A43);
+    background: linear-gradient(to right, #2C5364, #203A43);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+
+    h1 {
+        font-size: 24px;
+        color: #89ae93;
+        margin-bottom: 10px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .todo-item {
+        background-color: #eee;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: background-color 0.3s ease-in-out;
+
+        &:hover {
+            background-color: #f0f0f0;
+        }
+
+        strong {
+            font-weight: bold;
+            color: #555;
+        }
+    }
+}
