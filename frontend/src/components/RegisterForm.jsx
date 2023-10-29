@@ -33,6 +33,7 @@ function RegisterForm({ btn }) {
         placeholder="Confirm Password"
       />
       <button type="submit">SUBMIT &#8595;</button>
+      <br />
       { btn }
     </form>
   );
