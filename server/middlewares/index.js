@@ -14,14 +14,18 @@ exports.loginUserSchema = Joi.object({
         .lowercase()
         .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "edu"] } })
         .required()
-        .label("User Name")
+        .label("Username")
         .messages({
-            "string.email": "Not a valid email address",
-            "string.empty": "Email can't be Empty",
+            "string.email": "Not a valid Username!.",
+            "string.empty": "Username cannot be empty.",
         }),
-    password: Joi.string().max(100).required().label("Password").messages({
-        "string.pattern.base": "Password is Invalid!",
-    }),
+    password: Joi.string()
+        .max(100)
+        .required()
+        .label("Password")
+        .messages({
+            "string.pattern.base": "Password is Invalid!",
+        }),
 });
 
 
@@ -33,12 +37,12 @@ exports.registerUserSchema = Joi.object({
         .lowercase()
         .email({ minDomainSegments: 2, tlds: { allow: ["com", "net", "edu"] } })
         .required()
-        .label("User Name")
+        .label("Email")
         .messages({
-            "string.email": "Not a valid email address",
-            "string.empty": "Email can't be Empty",
+            "string.email": "Not a valid Email",
+            "string.empty": "Email cannot be Empty",
         }),
-    phoneNumber: Joi.string()
+    phone: Joi.string()
         .length(10)
         .required()
         .label("Phone Number")
@@ -46,11 +50,6 @@ exports.registerUserSchema = Joi.object({
             "string.empty": "Phone Number can't be Empty",
         }),
     // oneTimeCode: Joi.string().min(0).max(6).allow(null, "").label("OTP"),
-    passwordConfirmation: Joi.any()
-        .equal(Joi.ref("password"))
-        .required()
-        .label("Confirm Password")
-        .messages({ "any.only": "Passwords did not match" }),
     password: Joi.string()
         .min(8)
         .max(100)
@@ -60,6 +59,13 @@ exports.registerUserSchema = Joi.object({
         .label("Password")
         .messages({
             "string.pattern.base": "Password is not Strong Enough",
+        }),
+    confirmPassword: Joi.any()
+        .equal(Joi.ref("password"))
+        .required()
+        .label("Confirm Password")
+        .messages({
+            "any.only": "Password and Confirm Password do not match"
         }),
 });
 

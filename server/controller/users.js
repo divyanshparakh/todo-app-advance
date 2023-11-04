@@ -27,32 +27,31 @@ exports.loginUser = function (req, res) {
                     else if (results.rows.length == 1) {
                         // On Successful Login
                         const token = jwt.sign(
-                            {
-                                email: results.rows[0].email,
-                                full_name: results.rows[0].full_name,
-                                phone_number: results.rows[0].phone_number,
-                            },
+                            {email},
                             btoa(process.env.TOKEN_SECRET), // converting token_secret to base 64
                             { expiresIn: "1800s" },
-                            { algorithm: "HS256" },
+                            {
+                                alg: "HS256",
+                                typ: "JWT"
+                            },
                             (err) => {
                                 if (err) {
                                     res.status(400).json({
                                         message: "Not able to create a token",
                                     });
-                                    console.log(err);
+                                    // console.log(err);
                                 }
                             }
                         );
 
                         res.header({
-                            Authorization: "Bearer" + token,
+                            Authorization: "Bearer " + token,
                             "Access-Control-Expose-Headers": "Authorization",
                         });
                         res.status(201).json({
-                            message: results.rows[0].full_name + "logged in.",
+                            message: results.rows[0].name + " Logged in Successfully",
                         });
-                        console.log(results.rows[0].full_name + " just logged in");
+                        console.log(results.rows[0].name + " Logged in Successfully");
                     } else {
                         login_pool.query(
                             "SELECT * FROM authentication WHERE email = ($1)",
@@ -86,19 +85,18 @@ exports.loginUser = function (req, res) {
 
 
 
-exports.signupUser = function (req, res) {
+exports.registerUser = function (req, res) {
     var registerInputChecked = registerUserSchema.validate(req.body);
     if (registerInputChecked.error == null) {
         const {
             email,
-            phoneNumber,
-            password,
-            passwordConfirmation,
+            phone,
+            password
         } = req.body;
         try {
             login_pool.query(
-                "SELECT * FROM authentication WHERE email = ($1) or phone_number = ($2)",
-                [email, phoneNumber],
+                "SELECT * FROM authentication WHERE email = ($1) or phone = ($2)",
+                [email, phone],
                 (errUser, result) => {
                     if (result != null && result.rows.length > 0) {
                         res.status(409).json({
@@ -107,8 +105,8 @@ exports.signupUser = function (req, res) {
                         console.log("Duplicate Credential(s) present in Database");
                     } else {
                         register_pool.query(
-                            "INSERT INTO authentication (email, phone_number, password) VALUES ($1, $2, crypt($4, gen_salt('bf')))",
-                            [email, phoneNumber, password]
+                            "INSERT INTO authentication (email, phone, password) VALUES ($1, $2, crypt($3, gen_salt('bf')))",
+                            [email, phone, password]
                         );
                         console.log("User Successfully Created");
                         res.status(201).send({ message: "New User Created by " + email });
@@ -119,7 +117,6 @@ exports.signupUser = function (req, res) {
             console.log(error.stack);
         }
     } else {
-        console.log(registerInputChecked.error.details[0].message);
-        res.status(500).json(registerInputChecked.error.details[0]);
+        res.status(400).json(registerInputChecked.error.details[0]);
     }
 };

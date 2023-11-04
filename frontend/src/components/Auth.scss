@@ -25,7 +25,7 @@
           bottom: 50px;
           input,
           select {
-            width: 250px;
+            width: 210px;
             height: 30px;
             margin: 10px;
             background-color: rgba(20, 1, 86, 1);
@@ -41,39 +41,24 @@
           }
           select {
             color: rgba(227, 80, 125, 0.5);
-            width: 260px;
+            width: 220px;
             height: 40px;
           }
           button {
             cursor: pointer;
-            width: 260px;
+            width: 220px;
             height: 40px;
             margin: 10px;
             background-color: #140156;
             border: 2px solid #e3507d;
             color: #e3507d;
-            font-weight: 600;
+            font-weight: 400;
             span {
               color: #e3507d;
-              font-weight: 900;
+              font-weight: 600;
             }
             &:hover {
               background-color: #e3507d;
-              background-image: linear-gradient(
-                to right,
-                #e29867,
-                #ec8469,
-                #f26e75,
-                #f05a89,
-                #e34da4,
-                #d842b3,
-                #c73cc3,
-                #ae3dd5,
-                #a330dd,
-                #9422e6,
-                #8114ef,
-                #6607f9
-              );
               color: whitesmoke;
               span {
                 color: whitesmoke;
@@ -88,8 +73,9 @@
             font-weight: 500;
           }
           .error {
-            color: #ff000dc5;
-            margin: 10px;
+            color: whitesmoke;
+            margin-top: 10px;
+            font-weight: 500;
             text-decoration: underline;
           }
         }

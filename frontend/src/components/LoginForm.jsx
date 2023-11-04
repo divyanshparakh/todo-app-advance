@@ -1,14 +1,47 @@
-import React, { Component } from "react";
-import axios from "axios";
-import jwtDecode from "jwt-decode";
-import "./LoginForm.scss";
+import React, { Component, useState } from "react";
 
-function LoginForm({btn, onLogin}) {
+import api from "../index";
+
+function LoginForm({btn}) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
+
+    const handleLogin = async (event) => {
+        try {
+            event.preventDefault();
+            const response = await api.post('/login', {
+                email,
+                password,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json;charset=UTF-8",
+                    "Accept": "application/vnd.api+json",
+                },
+            });
+            // Assuming the response contains the token upon successful login
+            const token = response.headers.authorization;
+            
+            // You can now handle the token, like storing it in localStorage, etc.
+            if(token !== undefined) {
+                localStorage.setItem('token', token);
+                window.location.href = '/';
+            }
+            // Perform actions upon successful login
+        } catch (error) {
+			setError(error.response.data.message.replace(/"/g, ""));
+            // Handle error, show a message, etc.
+        }
+    };
+    
     return (
-        <form className="login page">
-            <button onClick={onLogin}></button>
+        <form className="login page" onSubmit={handleLogin}>
+            <button type="submit">LOGIN</button>
             <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 id="username"
                 name="username"
                 autoComplete="username"
@@ -16,14 +49,18 @@ function LoginForm({btn, onLogin}) {
             />
             <input
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 id="password"
+                autoComplete="password"
                 placeholder="Password"
             />
             <button type="submit">LOGIN</button>
+            <p className="error">{error}</p>
             <div className="text">
                 <a href="">Forgot Password?</a>
             </div>
-            <div className="text">Not a Member?</div>
+            <div className="text">Not Registered?</div>
             <br />
             { btn }
         </form>

@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 10, // 10 requests,
+  max: 100, // 100 requests,
 });
 
 
@@ -38,7 +38,7 @@ app.disable('x-powered-by')    // Reduce Fingerprinting
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

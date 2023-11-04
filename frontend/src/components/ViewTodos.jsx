@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./ViewTodos.scss"; // Import your SCSS file
+import api from "../index"
 
 function ViewTodos() {
     const [todos, setTodos] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const apiUrl = "http://localhost:3000/todos";
-    
-        axios
-        .get(apiUrl, {
+        api
+        .get('/todos', {
             headers: {
                 'Access-Control-Allow-Origin': '*',
               // Add any other necessary headers here

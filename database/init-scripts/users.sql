@@ -18,7 +18,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE todos TO worker;
 -- GRANT ALL PRIVILEGES ON TABLE portfolios.portfolios_id_seq TO portfolio_user;
 
 -- Insert initial data
--- INSERT INTO authentication.authentication (full_name, email, phone_number, password) VALUES (
+-- INSERT INTO authentication.authentication (name, email, phone, password) VALUES (
 --     'test',
 --     'test@gmail.com',
 --     9999999999,
@@ -27,7 +27,16 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE todos TO worker;
 
 CREATE TABLE authentication (
     email VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
-    phone_number NUMERIC(10) NOT NULL UNIQUE,
+    phone NUMERIC(10) NOT NULL UNIQUE,
     password VARCHAR(200) NOT NULL,
+    name VARCHAR(200),
     creation_info TIMESTAMP DEFAULT Now()
+);
+
+
+INSERT INTO authentication (email, phone, password)
+VALUES (
+    'test@gmail.com',
+    9999999999,
+    '$2a$06$0nk7Pq.u3E0kt7Il0eRpZu8.IvW3UC1QpHjFP7GUXs5mrG7xteCnK'
 );
