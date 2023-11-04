@@ -33,7 +33,7 @@ function App() {
 		<div className="App">
 		<BrowserRouter>
 			<Routes>
-			<Route path="/auth" element={<Auth></Auth>}></Route>
+			<Route path="/auth" element={storedToken ? <Navigate to="/" /> : <Auth></Auth>}></Route>
 			<Route path="/todos" element={<ViewTodos></ViewTodos>} />
 			<Route index element={storedToken ? <ListHeader></ListHeader> : <Navigate to="/auth" />} />
 			</Routes>

@@ -10,7 +10,7 @@ function Auth() {
         <button onClick={() => setToggle(false)}>LOG IN &nbsp;<span>&#8594;</span></button>
     );
     const toggleButton2 = (
-        <button onClick={() => setToggle(true)}>SIGN UP &nbsp;<span>&#8594;</span></button>
+        <button onClick={() => setToggle(true)}>REGISTER &nbsp;<span>&#8594;</span></button>
     );
     return (
         <div className="auth">
