@@ -70,18 +70,17 @@ exports.registerUserSchema = Joi.object({
 });
 
 exports.verifyToken = function (req, res, next) {
-    const token = req.header("authorization");
+    const token = req.headers.authorization;
     if (!token) {
-        return res.status(401).json({ message: "Access Denied" });
+        return res.status(401).json({ message: "Access Denied. No token provided." });
     }
-    else {
-        try {
-            const verified = jwt.verify(token, btoa(process.env.TOKEN_SECRET));
+    try {
+            const verified = jwt.verify(token.replace("Bearer ", ""), atob(process.env.TOKEN_SECRET));
             req.user = verified;
+            req.email = verified.email;
             next();
-        } catch (e) {
-            res.status(400).json({ message: "Invalid Token" });
-        }
+    } catch (e) {
+        return res.status(403).json({ message: 'Invalid token' });
     }
 };
 

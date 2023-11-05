@@ -8,11 +8,10 @@ CREATE SCHEMA IF NOT EXISTS authentication;
 
 
 CREATE TABLE todos (
-    id VARCHAR(225) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     email VARCHAR(255),
     title VARCHAR(30),
-    progress INT,
-    date VARCHAR(300)
+    progress INTEGER
 )
 
 -- INSERT INTO todos VALUES (

@@ -9,6 +9,7 @@ CREATE ROLE worker WITH
     NOCREATEROLE
     NOREPLICATION;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE todos TO worker;
+GRANT USAGE, SELECT ON SEQUENCE public.todos_id_seq TO worker;
 
 -- Grant privileges to roles/users
 -- GRANT SELECT ON SCHEMA authentication TO login_user;

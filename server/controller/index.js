@@ -1,32 +1,39 @@
 const {v4:uuidv4} = require("uuid");
 var { todos_pool } = require("../database");
+const jwt = require('jsonwebtoken');
 
 exports.getTodos = function (req, res, next) {
-    const email = req.params.email;
-    todos_pool.query("SELECT * FROM Todos", (err, results) => {
-        if (err) {
-            console.error(err.stack);
+    // console.log(req.body);
+    const email = req.body.email;
+    todos_pool.query("SELECT * FROM Todos",
+        [],
+        (err, results) => {
+            if (err) {
+                console.error(err.stack);
+            }
+            if (results.rowCount > 0)
+                res.status(200).send(results.rows);
+            res.status(200).send(); // No Data Found
         }
-        res.status(200).send(results.rows);
-    });
+    );
 };
 
 
 exports.addTodos = function(req, res, next) {
-    const { email, title, progress, date } = req.body;
+    const { title, progress } = req.body;
+    const email = req.email; // Added to req after verifying the jwt in the server itself
+    // console.log(req.body);
     const id = uuidv4();
-    // console.log(user_email,title);
     try {
-        todos_pool.query("INSERT INTO todos( id, email, title, progress, date) VALUES ($1, $2, $3, $4, $5)",
+        todos_pool.query("INSERT INTO todos (email, title, progress) VALUES ($1, $2, $3)",
             [
-                id,
                 email,
                 title,
-                progress,
-                date
+                progress
             ],
             (err, results) => {
                 if (err) {
+                    // console.log(JSON.stringify(err));
                     JSON.stringify(err["detail"]).search("already exists") == -1
                         ? res.status(400).json({
                             message: "Something Unexpected Happened",
@@ -35,12 +42,11 @@ exports.addTodos = function(req, res, next) {
                             message: "Duplicate TODO",
                         });
                 } else if (results) {
-                    console.log(results);
+                    // console.log(results);
                     res.status(201).send({ message: "Created TODO" });
                 }
             }
         )
-        res.json(newtodo.rows);
     } catch (error) {
         console.log(error);
     }
@@ -48,15 +54,15 @@ exports.addTodos = function(req, res, next) {
 
 exports.editTodos = function(req, res, next) {
     const {id} = req.params;
-    const { email, title, progress, date} = req.body;
+    const email = req.email; // Added to req after verifying the jwt in the server itself
+    const { title, progress } = req.body;
     
     try {
-        todos_pool.query("UPDATE todos SET email=$1, title=$2, progress=$3, date=$4 WHERE id=$5",
+        todos_pool.query("UPDATE todos SET email=$1, title=$2, progress=$3 WHERE id=$4",
         [
             email,
             title,
             progress,
-            date,
             id
         ],
         (err, results) => {

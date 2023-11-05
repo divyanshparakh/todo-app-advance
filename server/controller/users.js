@@ -28,7 +28,7 @@ exports.loginUser = function (req, res) {
                         // On Successful Login
                         const token = jwt.sign(
                             {email},
-                            btoa(process.env.TOKEN_SECRET), // converting token_secret to base 64
+                            atob(process.env.TOKEN_SECRET), // converting token_secret to base 64
                             { expiresIn: "1800s" },
                             {
                                 alg: "HS256",

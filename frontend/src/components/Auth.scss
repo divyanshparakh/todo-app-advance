@@ -35,9 +35,6 @@
             text-align: center;
             font-weight: 600;
             appearance: none;
-            &:focus {
-              border: none;
-            }
           }
           select {
             color: rgba(227, 80, 125, 0.5);
