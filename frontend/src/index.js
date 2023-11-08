@@ -12,7 +12,13 @@ root.render(
 );
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/'
+  baseURL: 'http://localhost:3000/',
+  timeout: 1000,
+  headers: {
+    "Content-Type": "application/json;charset=UTF-8",
+    "Accept": "application/vnd.api+json",
+    "Authorization": localStorage["token"],
+  }
 })
 
 // reportWebVitals();

@@ -20,12 +20,6 @@ function RegisterForm({ btn }) {
 				otp,
 				password,
 				confirmPassword,
-			},
-			{
-				headers: {
-					"Content-Type": "application/json;charset=UTF-8",
-					"Accept": "application/vnd.api+json",
-				},
 			});
 			// Perform actions upon successful Register
 		} catch (error) {

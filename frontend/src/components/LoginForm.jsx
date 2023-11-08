@@ -13,12 +13,6 @@ function LoginForm({btn}) {
             const response = await api.post('/login', {
                 email,
                 password,
-            },
-            {
-                headers: {
-                    "Content-Type": "application/json;charset=UTF-8",
-                    "Accept": "application/vnd.api+json",
-                },
             });
             // Assuming the response contains the token upon successful login
             const token = response.headers.authorization;

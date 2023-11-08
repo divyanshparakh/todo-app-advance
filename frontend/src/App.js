@@ -38,7 +38,10 @@ function App() {
 					<Route index element={storedToken ? <ViewTodos decodedToken={decodedToken.email}></ViewTodos> : <Navigate to="/auth" />} />
 				</Routes>
 			</BrowserRouter>
-			<button onClick={handleLogout}>Logout</button>
+			{
+				
+				<button onClick={handleLogout} className="logout-button">Logout</button>
+			}
 		</div>
 	);
 }

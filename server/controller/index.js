@@ -3,30 +3,34 @@ var { todos_pool } = require("../database");
 const jwt = require('jsonwebtoken');
 
 exports.getTodos = function (req, res, next) {
-    // console.log(req.body);
-    const email = req.body.email;
-    todos_pool.query("SELECT * FROM Todos",
-        [],
+    const email = req.email;
+    // console.log(req.email);
+    todos_pool.query("SELECT * FROM Todos WHERE email=$1",
+        [email],
         (err, results) => {
             if (err) {
                 console.error(err.stack);
             }
             if (results.rowCount > 0)
                 res.status(200).send(results.rows);
-            res.status(200).send(); // No Data Found
+            else
+                res.status(200).send(); // No Data Found
         }
     );
 };
 
 
 exports.addTodos = function(req, res, next) {
+    // console.log(req.email);
+    // console.log(req.body);
     const { title, progress } = req.body;
     const email = req.email; // Added to req after verifying the jwt in the server itself
-    // console.log(req.body);
     const id = uuidv4();
+    console.log(id);
     try {
-        todos_pool.query("INSERT INTO todos (email, title, progress) VALUES ($1, $2, $3)",
+        todos_pool.query("INSERT INTO todos (id, email, title, progress) VALUES ($1, $2, $3, $4)",
             [
+                id,
                 email,
                 title,
                 progress
@@ -53,12 +57,13 @@ exports.addTodos = function(req, res, next) {
 }
 
 exports.editTodos = function(req, res, next) {
+    // console.log(req.body);
     const {id} = req.params;
     const email = req.email; // Added to req after verifying the jwt in the server itself
     const { title, progress } = req.body;
     
     try {
-        todos_pool.query("UPDATE todos SET email=$1, title=$2, progress=$3 WHERE id=$4",
+        todos_pool.query("UPDATE todos SET title=$2, progress=$3 WHERE id=$4 AND email=$1",
         [
             email,
             title,
@@ -75,39 +80,33 @@ exports.editTodos = function(req, res, next) {
                         message: "Duplicate TODO",
                     });
             } else if (results) {
-                console.log(results);
-                res.status(201).send({ message: "Edited TODO" });
+                // console.log(results);
+                res.status(201).send({ message: "Edited TODOs" });
             }
         })
-        res.json(newtodo.rows);
     } catch (error) {
         console.log(error);
     }
 }
 
 exports.deleteTodos = function(req, res, next) {
-    const id = uuidv4();
+    console.log(req.params);
+    const id = req.params.id;
     
     try {
-        todos_pool.query("DELETE FROM todos WHERE id=$1",
-            [id],
-            (err, results) => {
-                if (err) {
-                    JSON.stringify(err["detail"]).search("already exists") == -1
-                        ? res.status(400).json({
-                            message: "Something Unexpected Happened",
-                        })
-                        : res.status(400).json({
-                            message: "Duplicate TODO",
-                        });
-                } else if (results) {
-                    console.log(results);
-                    res.status(201).send({ message: "Deleted TODO" });
+        todos_pool.query("DELETE FROM todos WHERE id=$1", [id], (err, results) => {
+            if (err) {
+                if (JSON.stringify(err.detail).search("already exists") === -1) {
+                    res.status(400).json({ message: "Something Unexpected Happened" });
+                } else {
+                    res.status(400).json({ message: "Duplicate TODO" });
                 }
+            } else {
+                res.status(200).json({ message: "Deleted TODO" });
             }
-        )
-        res.json(newtodo.rows);
+        });
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
+    
 }

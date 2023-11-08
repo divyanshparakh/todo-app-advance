@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/todos', getTodos); // Get all TODOs
+router.get('/todos', verifyToken, getTodos); // Get all TODOs
 
 router.post('/todos', verifyToken, addTodos); // Add a TODO
 
