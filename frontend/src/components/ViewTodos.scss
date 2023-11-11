@@ -43,10 +43,29 @@
                 background-color: #f0f0f0;
             }
 
+            .edit-todo-form {
+                .title {
+                    width: 210px;
+                    height: 30px;
+                    margin: 10px;
+                    border: 2px solid #e3507d;
+                    padding: 5px;
+                    text-align: center;
+                    font-weight: 600;
+                    appearance: none;
+                    background-color: rgba(20, 1, 86, 1);
+                    color: #e3507d;
+                    &:hover {
+                        background-color: #e3507d;
+                        color: whitesmoke;
+                    }
+                }
+            }
+
             .todo-card-header {
                 font-weight: bold;
                 color: #333;
-                font-size: 30px;
+                font-size: 20px;
                 margin-bottom: 10px;
                 text-align: center;
                 cursor: text;

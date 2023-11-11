@@ -80,7 +80,10 @@ exports.verifyToken = function (req, res, next) {
             req.email = verified.email;
             next();
     } catch (e) {
-        return res.status(403).json({ message: 'Invalid token' });
+        return res.status(401).json({
+            'error': 'Unauthorized',
+            'message': 'Invalid or expired token'
+        });
     }
 };
 

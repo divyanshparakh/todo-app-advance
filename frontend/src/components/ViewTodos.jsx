@@ -8,7 +8,7 @@ import jwtDecode from "jwt-decode";
 function ViewTodos(decodedToken) {
     const [todos, setTodos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [openDialog, handleNewTodoDialogOpen] = useState(false);
+    const [openAddDialog, handleAddTodoDialogOpen] = useState(false);
     const [editingTodo, setEditingTodo] = useState({
         id: '0',
         title: '',
@@ -26,15 +26,22 @@ function ViewTodos(decodedToken) {
             const response = await api.get("/todos", {
                 decodedToken,
             });
-            setTodos(response.data);
+            if(response.status === 200)
+                setTodos(response.data);
             setLoading(false);
         } catch (error) {
-            console.error("Error fetching todos:", error);
-            setLoading(true);
+            if (error.response && error.response.status === 401) {
+                // Handle 401 Unauthorized error, e.g., redirect to login page
+                localStorage.removeItem('token');
+            } else {
+                console.error("Error fetching todos:", error);
+                setLoading(true);
+            }
         }
     };
 
     const handleCreateTodo = async () => {
+        setEditingTodo(null);
         try {
             const response = await api.post("/todos", {
                 ...newTodo,
@@ -44,7 +51,7 @@ function ViewTodos(decodedToken) {
                 title: "",
                 progress: 0,
             });
-            handleNewTodoDialogOpen(false);
+            handleAddTodoDialogOpen(false);
             getTodos();
         } catch (error) {
             console.log(error.response.data.message.replace(/"/g, ""));
@@ -79,13 +86,13 @@ function ViewTodos(decodedToken) {
     };
 
     const handleNewTodoDialogClose = () => {
-        handleNewTodoDialogOpen(false);
+        handleAddTodoDialogOpen(false);
     };
 
     const handleEditTodoDialogOpen = (todoId) => {
+        handleNewTodoDialogClose();
         const editingTodo = todos.find((todo) => todo.id === todoId);
         setEditingTodo(editingTodo);
-        getTodos();
     };
 
     const calculateBackground = (progress) => {
@@ -93,22 +100,37 @@ function ViewTodos(decodedToken) {
     };
 
     useEffect(() => {
+        getTodos();
         // console.log(decodedToken);
-        getTodos()
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') {
+            // Close the add todo dialog
+                handleNewTodoDialogClose();
+                setEditingTodo(null);
+            // Close the edit todo dialog                
+            }
+        };
+        // Attach the event listener
+        window.addEventListener('keydown', handleKeyDown);
+        // Clean up the event listener on component unmount
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
 	}, []);
 
     return (
         <div className="todo-list">
             <h1>TODOs</h1>
-            <button onClick={() => handleNewTodoDialogOpen(true)}>Add</button>
+            <button onClick={() => handleAddTodoDialogOpen(true)}>Add</button>
             {
-                openDialog && (
-                    <div className="dialog create-todo">
+                openAddDialog && (
+                    <form className="dialog create-todo" onSubmit={handleNewTodoDialogClose}  style={{ background: calculateBackground(newTodo.progress) }}>
                         <input
                             type="text"
                             value={newTodo.title}
                             className='title'
                             onChange={(e) => setNewTodo({ ...newTodo, title: e.target.value })}
+                            autoFocus
                         />
                         <div className="range-slider-container">
                             <input
@@ -122,52 +144,52 @@ function ViewTodos(decodedToken) {
                             <span className="slider-value">{newTodo.progress}</span>
                         </div>
                         {newTodo.title && <button onClick={handleCreateTodo}>Add</button>}
-                        <button onClick={handleNewTodoDialogClose}>Cancel</button>
-                    </div>
+                        <button type='submit'>Cancel</button>
+                    </form>
                 )
             } 
             <ul>
-                {
-                    todos.map((todo, index) => (
-                        <li key={todo.id} className="todo-item-card" style={{ background: calculateBackground(todo.progress) }}>
-                            {/* {index + 1} */}
-                            <div className="todo-card-header">
+                {todos.map((todo, index) => (
+                    <li key={todo.id} className="todo-item-card" style={{ background: calculateBackground(editingTodo?.progress || todo.progress) }}>
+                        {editingTodo && editingTodo.id === todo.id ? (
+                            <form onSubmit={(e) => handleEditTodo(e, todo.id)} className="edit-todo-form">
+                                <input
+                                    type="text"
+                                    value={editingTodo.title}
+                                    className='title'
+                                    onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}
+                                    autoFocus
+                                />
+                                <div className="range-slider-container">
+                                    <input
+                                        type="range"
+                                        min={0}
+                                        max={100}
+                                        value={editingTodo.progress}
+                                        className='slider'
+                                        onChange={(e) => setEditingTodo({ ...editingTodo, progress: parseInt(e.target.value, 10) })}
+                                    />
+                                    <span className="slider-value">{editingTodo.progress}</span>
+                                </div>
+                                {(editingTodo.title !== todo.title || editingTodo.progress !== todo.progress) && <button type='submit'>Save</button>}
+                                <button type='button' onClick={() => { setEditingTodo(null) }}>Cancel</button>
+                            </form>
+                        ) : (
+                            <div className="todo-card-header" onClick={() => handleEditTodoDialogOpen(todo.id)}>
                                 {todo.title}
                             </div>
-                            <br />
-                            <br />
-                            <br />
-                            <div className="todo-card-options">
-                                <button onClick={() => handleEditTodoDialogOpen(todo.id)}>Edit</button>
-                                <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
-                                {editingTodo && editingTodo.id === todo.id && (
-                                    <div className="dialog edit-todo">
-                                        <input
-                                            type="text"
-                                            value={editingTodo.title}
-                                            className='title'
-                                            onChange={(e) => setEditingTodo({ ...editingTodo, title: e.target.value })}
-                                        />
-                                        <div className="range-slider-container">
-                                            <input
-                                                type="range"
-                                                min={0}
-                                                max={100}
-                                                value={editingTodo.progress}
-                                                className='slider'
-                                                onChange={(e) => setEditingTodo({ ...editingTodo, progress: parseInt(e.target.value, 10) })}
-                                            />
-                                            <span className="slider-value">{editingTodo.progress}</span>
-                                        </div>
-                                        {(editingTodo.title !== todo.title || editingTodo.progress !== todo.progress) && <button onClick={handleEditTodo}>Save</button>}
-                                        <button onClick={() => { setEditingTodo(null) }}>Cancel</button>
-                                    </div>
-                                )}
-                            </div>
-                        </li>
-                    ))
-                }
+                        )}
+                        <br />
+                        <br />
+                        <br />
+                        <div className="todo-card-options">
+                            <button onClick={() => handleEditTodoDialogOpen(todo.id)}>Edit</button>
+                            <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+                        </div>
+                    </li>
+                ))}
             </ul>
+
         </div>
     );
 }
