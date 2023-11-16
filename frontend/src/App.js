@@ -1,10 +1,9 @@
 import ReactDOM from "react-dom/client";
 // import { useSelector } from 'react-redux';
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import "./App.scss";
 import Auth from "./components/Auth";
-import ListHeader from "./components/ListHeader";
 import ViewTodos from './components/ViewTodos';
 import jwtDecode from "jwt-decode";
 
@@ -28,20 +27,18 @@ function App() {
 			window.location.href = '/';
 	}
 
+	const logoutButton = (
+				storedToken ? <button className="custom-button" onClick={handleLogout}>LOGOUT</button> : ''
+	);
 
 	return (
 		<div className="App">
 			<BrowserRouter>
 				<Routes>
 					<Route path="/auth" element={storedToken ? <Navigate to="/" /> : <Auth></Auth>}></Route>
-					<Route path="/todos" element={<ListHeader></ListHeader>} />
-					<Route index element={storedToken ? <ViewTodos decodedToken={decodedToken.email}></ViewTodos> : <Navigate to="/auth" />} />
+					<Route index element={storedToken ? <ViewTodos decodedToken={decodedToken.email} logoutButton={logoutButton}></ViewTodos> : <Navigate to="/auth" />} />
 				</Routes>
 			</BrowserRouter>
-			{
-				
-				<button onClick={handleLogout} className="logout-button">Logout</button>
-			}
 		</div>
 	);
 }

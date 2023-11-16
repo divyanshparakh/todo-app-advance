@@ -1,15 +1,19 @@
 /* todo-list.scss */
-.todo-list {
+.scaffold {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #140156;
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 720px;
     height: 100%;
-    margin: 0 auto;
+    margin: 5rem auto;
     border: 2px solid #e3507d;
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+
     h1 {
         font-size: 24px;
         color: whitesmoke;
@@ -22,62 +26,11 @@
             border: none;
         }
     }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 10px;
-
-        .todo-item-card {
-            background-color: #eee;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 15px;
-            transition: background-color 0.3s ease-in-out;
-            display: flex;
-            flex: row;
-            justify-content: space-between;
     
-            &:hover {
-                background-color: #f0f0f0;
-            }
-
-            .edit-todo-form {
-                .title {
-                    width: 210px;
-                    height: 30px;
-                    margin: 10px;
-                    border: 2px solid #e3507d;
-                    padding: 5px;
-                    text-align: center;
-                    font-weight: 600;
-                    appearance: none;
-                    background-color: rgba(20, 1, 86, 1);
-                    color: #e3507d;
-                    &:hover {
-                        background-color: #e3507d;
-                        color: whitesmoke;
-                    }
-                }
-            }
-
-            .todo-card-header {
-                font-weight: bold;
-                color: #333;
-                font-size: 20px;
-                margin-bottom: 10px;
-                text-align: center;
-                cursor: text;
-            }
-
-            .todo-card-options {
-                color: #666;
-                font-size: 14px;
-                display: flex;
-                flex: row;
-            }
-        }
+    section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .create-todo {
@@ -85,7 +38,8 @@
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 15px;
-        margin-bottom: 15px;
+        margin: 15px;
+        margin-bottom: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -164,6 +118,60 @@
                 right: 1px;
                 text-align: center;
                 color: #d3d3d3;
+            }
+        }
+    }
+
+    .todo-list {
+        list-style-type: none;
+        // margin: 10px;
+        
+        .todo-item-card {
+            background-color: #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 15px;
+            transition: background-color 0.3s ease-in-out;
+            display: flex;
+            flex: row;
+            justify-content: space-between;
+            
+            &:hover {
+                background-color: #f0f0f0;
+            }
+
+            .edit-todo-form {
+                .title {
+                    width: 210px;
+                    height: 30px;
+                    border: 2px solid #e3507d;
+                    padding: 5px;
+                    text-align: center;
+                    font-weight: 600;
+                    appearance: none;
+                    background-color: rgba(20, 1, 86, 1);
+                    color: #e3507d;
+                    &:hover {
+                        background-color: #e3507d;
+                        color: whitesmoke;
+                    }
+                }
+            }
+
+            .todo-card-header {
+                font-weight: bold;
+                color: #333;
+                font-size: 22px;
+                padding: 10px;
+                text-align: center;
+                cursor: text;
+            }
+
+            .todo-card-options {
+                color: #666;
+                display: flex;
+                flex: row;
             }
         }
     }

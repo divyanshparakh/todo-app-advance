@@ -91,7 +91,8 @@ exports.registerUser = function (req, res) {
         const {
             email,
             phone,
-            password
+            password,
+            name
         } = req.body;
         try {
             login_pool.query(
@@ -105,8 +106,8 @@ exports.registerUser = function (req, res) {
                         console.log("Duplicate Credential(s) present in Database");
                     } else {
                         register_pool.query(
-                            "INSERT INTO authentication (email, phone, password) VALUES ($1, $2, crypt($3, gen_salt('bf')))",
-                            [email, phone, password]
+                            "INSERT INTO authentication (email, phone, password, name) VALUES ($1, $2, crypt($3, gen_salt('bf')), $4)",
+                            [email, phone, password, name]
                         );
                         console.log("User Successfully Created");
                         res.status(201).send({ message: "New User Created by " + email });

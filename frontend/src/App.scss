@@ -11,22 +11,17 @@
     }
 }
 
-#app {
+.App {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    margin: 5px;
 }
 
-.logout-button {
-    position: absolute;
-    top: 0;
-    right: 0;
+.custom-button {
     cursor: pointer;
-    width: 180px;
+    width: 220px;
     height: 40px;
-    margin: 5px;
+    margin: 10px;
     background-color: #140156;
     border: 2px solid #e3507d;
     color: #e3507d;

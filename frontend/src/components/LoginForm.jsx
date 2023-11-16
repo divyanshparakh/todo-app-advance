@@ -31,7 +31,6 @@ function LoginForm({btn}) {
     
     return (
         <form className="login page" onSubmit={handleLogin}>
-            <button type="submit">LOGIN</button>
             <input
                 type="email"
                 value={email}
@@ -49,7 +48,7 @@ function LoginForm({btn}) {
                 autoComplete="password"
                 placeholder="Password"
             />
-            <button type="submit">LOGIN</button>
+            <button className="custom-button" type="submit">LOGIN</button>
             <p className="error">{error}</p>
             <div className="text">
                 <a href="">Forgot Password?</a>

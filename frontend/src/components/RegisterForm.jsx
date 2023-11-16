@@ -12,23 +12,26 @@ function RegisterForm({ btn }) {
 	const [error, setError] = useState(null);
 
 	const handleRegister = async (event) => {
-		try {
-			event.preventDefault();
-			const response = await api.post('/register', {
-				email,
-				phone,
-				otp,
-				password,
-				confirmPassword,
-			});
-			// Perform actions upon successful Register
-		} catch (error) {
+		event.preventDefault();
+		await api.post('/register', {
+			email,
+			phone,
+			otp,
+			password,
+			confirmPassword,
+			name
+		})
+		.then(() => {
+			// Navigate to the homepage
+			window.location.href = '/';
+		})
+		.catch((error) => {
+		// Handle errors
+			console.error('Registration failed:', error);
 			setError(error.response.data.message.replace(/"/g, ""));
-			// Handle error, show a message, etc.
-		}
-	};
+		});
+	}
 	
-
 	return (
 		<form className="register page" onSubmit={handleRegister}>
 			<input
@@ -72,7 +75,7 @@ function RegisterForm({ btn }) {
 				onChange={(e) => setConfirmPassword(e.target.value)}
 				placeholder="Confirm Password"
 			/>
-			<button type="submit">SUBMIT &#8595;</button>
+			<button className="custom-button" type="submit">SUBMIT &#8595;</button>
 			<p className="error">{error}</p>
 			<br />
 			{ btn }

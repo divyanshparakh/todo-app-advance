@@ -30,6 +30,14 @@ exports.loginUserSchema = Joi.object({
 
 
 exports.registerUserSchema = Joi.object({
+    name: Joi.string()
+        .min(3)
+        .max(100)
+        .required()
+        .label("Name")
+        .messages({
+            "string.empty": "Name can't be Empty",
+        }),
     email: Joi.string()
         .min(6)
         .max(50)

@@ -5,9 +5,9 @@ import jwtDecode from "jwt-decode";
 
 
 
-function ViewTodos(decodedToken) {
+function ViewTodos({decodedToken, logoutButton}) {
     const [todos, setTodos] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [openAddDialog, handleAddTodoDialogOpen] = useState(false);
     const [editingTodo, setEditingTodo] = useState({
         id: '0',
@@ -28,14 +28,14 @@ function ViewTodos(decodedToken) {
             });
             if(response.status === 200)
                 setTodos(response.data);
-            setLoading(false);
+            setIsLoading(false);
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 // Handle 401 Unauthorized error, e.g., redirect to login page
                 localStorage.removeItem('token');
             } else {
                 console.error("Error fetching todos:", error);
-                setLoading(true);
+                setIsLoading(true);
             }
         }
     };
@@ -77,7 +77,9 @@ function ViewTodos(decodedToken) {
     
     const handleDeleteTodo = async (todoId) => {
         try {
-            await api.delete(`/todos/${todoId}`).then(
+            setEditingTodo(null);
+            await api.delete(`/todos/${todoId}`)
+            .then(
                 getTodos()
             )
         } catch (error) {
@@ -118,10 +120,17 @@ function ViewTodos(decodedToken) {
         };
 	}, []);
 
+    if (isLoading) {
+        return <div className="loading">Loading...</div>;
+    }
+    
     return (
-        <div className="todo-list">
+        <div className="scaffold">
             <h1>TODOs</h1>
-            <button onClick={() => handleAddTodoDialogOpen(true)}>Add</button>
+            <section>
+                <button onClick={() => handleAddTodoDialogOpen(true)}>Add</button>
+                { logoutButton }
+            </section>
             {
                 openAddDialog && (
                     <form className="dialog create-todo" onSubmit={handleNewTodoDialogClose}  style={{ background: calculateBackground(newTodo.progress) }}>
@@ -147,9 +156,9 @@ function ViewTodos(decodedToken) {
                         <button type='submit'>Cancel</button>
                     </form>
                 )
-            } 
-            <ul>
-                {todos.map((todo, index) => (
+            }
+            <ul className="todo-list">
+                {todos.length > 0 && todos.map((todo, index) => (
                     <li key={todo.id} className="todo-item-card" style={{ background: calculateBackground(editingTodo?.progress || todo.progress) }}>
                         {editingTodo && editingTodo.id === todo.id ? (
                             <form onSubmit={(e) => handleEditTodo(e, todo.id)} className="edit-todo-form">
@@ -183,13 +192,12 @@ function ViewTodos(decodedToken) {
                         <br />
                         <br />
                         <div className="todo-card-options">
-                            <button onClick={() => handleEditTodoDialogOpen(todo.id)}>Edit</button>
+                            {/* <button onClick={() => handleEditTodoDialogOpen(todo.id)}>Edit</button> */}
                             <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
                         </div>
                     </li>
                 ))}
             </ul>
-
         </div>
     );
 }
