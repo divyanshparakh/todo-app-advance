@@ -13,7 +13,7 @@ function Auth() {
         <button className="custom-button" onClick={() => setToggle(true)}>REGISTER &nbsp;<span>&#8594;</span></button>
     );
     return (
-        <div className="auth">
+        <div className="auth-wrapper">
             <div className="auth-box">
                 {
                     toggle ?

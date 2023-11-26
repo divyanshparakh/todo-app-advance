@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ViewTodos.scss';
 import api from '../index';
-import jwtDecode from "jwt-decode";
-
 
 
 function ViewTodos({decodedToken, logoutButton}) {
@@ -98,7 +96,7 @@ function ViewTodos({decodedToken, logoutButton}) {
     };
 
     const calculateBackground = (progress) => {
-        return `linear-gradient(to right, #e3507d ${progress}%, #d3d3d3 ${progress}%)`;
+        return `linear-gradient(to right, #8d80f6 ${progress}%, #d3d3d3 ${progress}%)`;
     };
 
     useEffect(() => {
