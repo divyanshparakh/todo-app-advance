@@ -67,9 +67,10 @@ function ViewWeather() {
         if(isJsonString(selectedLocation))
             selectedLocation = JSON.parse(selectedLocation);
         try {
-            const response = await weatherApi.get("/current.json", {
+            const response = await weatherApi.get("/forecast.json", {
                 params: {
                     q: selectedLocation['lat'] + ',' + selectedLocation['lon'],
+                    days: 1
                 }
             });
 
@@ -130,6 +131,9 @@ function ViewWeather() {
                         </p>
                         <p>
                             Wind: {currentWeather['current']['wind_kph']}kph
+                        </p>
+                        <p>
+                            Rain: {currentWeather['forecast']['forecastday'][0]['day']['daily_will_it_rain']}%
                         </p>
                     </div>
                 )
