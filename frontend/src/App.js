@@ -4,11 +4,8 @@ import "./App.scss";
 import Auth from "./components/Auth";
 import HomePage from './components/HomePage';
 
-
-
 function App() {
 	const storedToken = localStorage.getItem('token');
-
 	return (
 		<div className="App">
 			<BrowserRouter>

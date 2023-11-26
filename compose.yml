@@ -12,6 +12,7 @@ services:
       - "${APP_PORT}:${APP_PORT}"
     environment:
       - EXTENRAL_PORT=${APP_PORT}
+      - REACT_APP_WEATHER_API_KEY=${REACT_APP_WEATHER_API_KEY}
     env_file:
       - .env
     depends_on:
