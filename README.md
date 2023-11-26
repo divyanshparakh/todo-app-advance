@@ -2,7 +2,6 @@
 
 ![alt text](Screenshot.png "Day Planner")
 
-
 ## Pre-requisites
 
 The following items should be installed on your machine:
