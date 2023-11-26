@@ -1,5 +1,6 @@
 # Day Planner App
 
+![alt text](Screenshot.png "Day Planner")
 
 
 ## Pre-requisites
