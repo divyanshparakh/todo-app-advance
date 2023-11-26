@@ -1,6 +1,7 @@
 # Day Planner App
 
 ![alt text](Screenshot.png "Day Planner")
+[Its extended project](https://github.com/divyanshparakh/Day-Planner)
 
 ## Pre-requisites
 
