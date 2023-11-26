@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 // import { toggleLoginRegister } from "./redux/actions";
 import jwtDecode from "jwt-decode";
 import ViewWeather from "./Weather/ViewWeather";
-import ViewTodos from "./ViewTodos";
+import ViewTodos from "./Todos/ViewTodos";
 
 function HomePage() {
 	const [decodedToken, setDecodedToken] = useState({});
@@ -18,11 +18,11 @@ function HomePage() {
 	const handleLogout = () => {
 		localStorage.removeItem('token');
 		if(localStorage.getItem('token') === null)
-			window.location.href = '/';
+			window.location.href = '/auth';
 	}
 
 	const logoutButton = (
-        storedToken ? <button className="custom-button" onClick={handleLogout}>LOGOUT</button> : ''
+        storedToken ? <button className="custom-button" onClick={handleLogout}>Logout</button> : ''
 	);
 
     return (

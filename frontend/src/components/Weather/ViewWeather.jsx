@@ -11,7 +11,7 @@ function ViewWeather() {
 
 	useEffect(() => {
         if(selectedLocation) {
-            // console.log(selectedLocation);
+            console.log(selectedLocation);
             getCurrentWeather(selectedLocation);
         }
 	}, [selectedLocation]);
@@ -63,7 +63,7 @@ function ViewWeather() {
     };
     
     const getCurrentWeather = async (selectedLocation) => {
-        console.log(selectedLocation);
+        // console.log(selectedLocation);
         if(isJsonString(selectedLocation))
             selectedLocation = JSON.parse(selectedLocation);
         try {
@@ -75,9 +75,10 @@ function ViewWeather() {
 
             if(response.status === 200) {
                 const results = response.data;
-                // console.log(results);
+                console.log(results);
                 setCurrentWeather(results);
                 setLocationLists(null);
+                document.getElementById('search-location').value = "";
             } else {
                 console.error("Error fetching weather: Unexpected status code", response.status);
             }
@@ -105,6 +106,7 @@ function ViewWeather() {
             {
                 currentWeather && Object.keys(currentWeather).length > 0 && (
                     <div className="selected-location-weather">
+                        <img src={currentWeather['current']['condition']['icon']} alt="" srcset="" height={35} />
                         <p>
                             {currentWeather['location']['name']}
                         </p>
@@ -114,30 +116,31 @@ function ViewWeather() {
                         <p>
                             {currentWeather['current']['condition']['text']}
                         </p>
-                        <img src={currentWeather['current']['condition']['icon']} alt="" srcset="" />
                         <p>
-                            {currentWeather['current']['gust_kph']}
+                            Gust: {currentWeather['current']['gust_kph']}
                         </p>
                         <p>
-                            {currentWeather['current']['humidity']}
+                            Humidity: {currentWeather['current']['humidity']}%
                         </p>
                         <p>
-                            {currentWeather['current']['precip_mm']}
+                            Percipitation: {currentWeather['current']['precip_mm']}mm
                         </p>
                         <p>
-                            {currentWeather['current']['uv']}
+                            UV: {currentWeather['current']['uv']}/10
                         </p>
                         <p>
-                            {currentWeather['current']['wind_kph']}
+                            Wind: {currentWeather['current']['wind_kph']}kph
                         </p>
                     </div>
                 )
             }
-            <br />
-            <div className="search-location-wrapper">
-                <input type="text" id="search-location"  placeholder="Search Location" pattern="[A-Za-z]" onChange={async (e) => handleSearchLocation(e.target.value)} />
+            <div className="search-location">
+                <div className="search-location-wrapper">
+                    <input type="text" id="search-location"  placeholder="Search Location" pattern="[A-Za-z]" onChange={async (e) => handleSearchLocation(e.target.value)} />
+                </div>
+                { locationLists && locationLists.length > 0 && <SearchResultsList results={locationLists} handleResultClick={handleResultClick} /> }
             </div>
-            { locationLists && locationLists.length > 0 && <SearchResultsList results={locationLists} handleResultClick={handleResultClick} /> }
+            
         </div>
     );
 }

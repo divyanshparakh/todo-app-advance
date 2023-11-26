@@ -7,16 +7,16 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 720px;
     height: 100%;
-    margin: 5rem auto;
-    border: 2px solid #e3507d;
+    margin: 2rem auto;
+    border: 1.5px solid #e3507d;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-content: center;
 
     h1 {
-        font-size: 24px;
-        color: whitesmoke;
+        font-size: 26px;
+        color: #e3507d;
         padding: 5px;
         margin: 10px;
         text-align: center;
@@ -27,10 +27,11 @@
         }
     }
     
-    section {
+    .upper-section {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 10px;
     }
 
     .create-todo {
@@ -124,8 +125,6 @@
 
     .todo-list {
         list-style-type: none;
-        // margin: 10px;
-        
         .todo-item-card {
             background-color: #eee;
             border-radius: 8px;
@@ -136,11 +135,9 @@
             display: flex;
             flex: row;
             justify-content: space-between;
-            
             &:hover {
                 background-color: #f0f0f0;
             }
-
             .edit-todo-form {
                 .title {
                     width: 210px;
@@ -158,16 +155,14 @@
                     }
                 }
             }
-
             .todo-card-header {
                 font-weight: bold;
-                color: whitesmoke;
+                color: rgba(0, 0, 0, 0.8);
                 font-size: 22px;
                 padding: 10px;
                 text-align: center;
                 cursor: text;
             }
-
             .todo-card-options {
                 color: #666;
                 display: flex;
@@ -175,14 +170,13 @@
             }
         }
     }
-        
     button {
         cursor: pointer;
         width: 100px;
         height: 40px;
         margin: 2px;
         background-color: #140156;
-        border: 2px solid #e3507d;
+        border: 1.5px solid #e3507d;
         color: #e3507d;
         font-weight: 400;
         span {

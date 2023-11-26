@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ViewTodos.scss';
-import api from '../index';
+import api from '../../index';
 
 
 function ViewTodos({decodedToken, logoutButton}) {
@@ -96,7 +96,7 @@ function ViewTodos({decodedToken, logoutButton}) {
     };
 
     const calculateBackground = (progress) => {
-        return `linear-gradient(to right, #8d80f6 ${progress}%, #d3d3d3 ${progress}%)`;
+        return `linear-gradient(to right, #8d80f6 ${progress}%, #625a69 ${progress}%)`;
     };
 
     useEffect(() => {
@@ -125,7 +125,7 @@ function ViewTodos({decodedToken, logoutButton}) {
     return (
         <div className="scaffold">
             <h1>TODOs</h1>
-            <section>
+            <section className='upper-section'>
                 <button onClick={() => handleAddTodoDialogOpen(true)}>Add</button>
                 { logoutButton }
             </section>
